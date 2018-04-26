@@ -62,7 +62,7 @@ void draw(int boxsize, sf::RenderWindow &renderWindow, Board &plansza, theme *th
 				}
 				if (plansza.array_of_places[arrI][arrJ].IsMArkToMoveTO)
 				{
-					place.setFillColor(sf::Color(255,0,0));
+					place.setFillColor(sf::Color(0,255,0));
 				}
 				//czy zaznaczone
 				if (plansza.array_of_places[arrI][arrJ].IsMarkToMoveFROM)
@@ -120,18 +120,70 @@ void draw(int boxsize, sf::RenderWindow &renderWindow, Board &plansza, theme *th
 	auto str = add2string("Black mans count:", intToStr(plansza.black_player_mans));
 	mens_count.setString(str);
 	mens_count.setFillColor(theme_arr[themeID].black_men_clolr);
-	mens_count.setOutlineThickness(boxsize / 30);
+	mens_count.setOutlineThickness(boxsize / 35);
 	mens_count.setOutlineColor(theme_arr[themeID].white_men_clor);
 	mens_count.setPosition(sf::Vector2f(boxsize *3.2f, boxsize/8));
 	renderWindow.draw(mens_count);
 	auto str2 = add2string("White mans count:", intToStr(plansza.white_player_mans));
 	mens_count.setString(str2);
 	mens_count.setFillColor(theme_arr[themeID].white_men_clor);
-	mens_count.setOutlineThickness(boxsize / 30);
+	mens_count.setOutlineThickness(boxsize / 35);
 	mens_count.setOutlineColor(theme_arr[themeID].black_men_clolr);
 	mens_count.setPosition(sf::Vector2f(boxsize *3.2f, 9.125f*boxsize));
 	renderWindow.draw(mens_count);
-
+	//save buttom
+	sf::RectangleShape SaveButtom;
+	SaveButtom.setSize(sf::Vector2f((67.0f / 10)*boxsize, boxsize));
+	SaveButtom.setPosition(sf::Vector2f(10 * boxsize, 8*boxsize));
+	SaveButtom.setFillColor(theme_arr[themeID].black_box_color);
+	SaveButtom.setOutlineColor(sf::Color(255, 0, 0));
+	SaveButtom.setOutlineThickness(0);
+	str = "Save Game";
+	mens_count.setString(str);
+	mens_count.setFillColor(theme_arr[themeID].white_box_color);
+	mens_count.setCharacterSize(boxsize);
+	mens_count.setOutlineThickness(0);
+	mens_count.setPosition(sf::Vector2f(11.75f * boxsize, 7.8f *boxsize));
+	renderWindow.draw(SaveButtom);
+	renderWindow.draw(mens_count);
+	//load buttom
+	SaveButtom.setSize(sf::Vector2f((67.0f / 10)*boxsize, boxsize));
+	SaveButtom.setPosition(sf::Vector2f(10 * boxsize, 6.5f * boxsize));
+	SaveButtom.setFillColor(theme_arr[themeID].black_box_color);
+	str = "Load Game";
+	mens_count.setString(str);
+	mens_count.setFillColor(theme_arr[themeID].white_box_color);
+	mens_count.setCharacterSize(boxsize);
+	mens_count.setOutlineThickness(0);
+	mens_count.setPosition(sf::Vector2f(11.75f * boxsize, 6.3f *boxsize));
+	renderWindow.draw(SaveButtom);
+	renderWindow.draw(mens_count);
+	//reset bottom
+	SaveButtom.setSize(sf::Vector2f((67.0f / 10)*boxsize, boxsize));
+	SaveButtom.setPosition(sf::Vector2f(10 * boxsize,5.0f * boxsize));
+	SaveButtom.setFillColor(theme_arr[themeID].black_box_color);
+	str = "Reset Game";
+	mens_count.setString(str);
+	mens_count.setFillColor(theme_arr[themeID].white_box_color);
+	mens_count.setCharacterSize(boxsize);
+	mens_count.setOutlineThickness(0);
+	mens_count.setPosition(sf::Vector2f(11.5f * boxsize, 4.8f *boxsize));
+	renderWindow.draw(SaveButtom);
+	renderWindow.draw(mens_count);
+	//bot
+	SaveButtom.setSize(sf::Vector2f((67.0f / 10)*boxsize, boxsize));
+	SaveButtom.setPosition(sf::Vector2f(10 * boxsize, 3.5f * boxsize));
+	SaveButtom.setFillColor(theme_arr[themeID].black_box_color);
+	str = "Black Bot";
+	mens_count.setString(str);
+	mens_count.setFillColor(theme_arr[themeID].white_box_color);
+	mens_count.setCharacterSize(boxsize);
+	if (plansza.BlackBotOn)
+		SaveButtom.setOutlineThickness(boxsize / 10);
+	mens_count.setOutlineThickness(0);
+	mens_count.setPosition(sf::Vector2f(11.8f * boxsize, 3.3f *boxsize));
+	renderWindow.draw(SaveButtom);
+	renderWindow.draw(mens_count);
 }
 
 #endif // !drawer_h

@@ -2,14 +2,12 @@
 #include "SFML\Graphics.hpp"
 
 
-
-
 struct borders
 {
-	int left;
-	int up;
-	int right;
-	int down;
+	float left;
+	float up;
+	float right;
+	float down;
 };
 struct place
 {
@@ -24,13 +22,14 @@ struct place
 	bool CanToBeat = 0;
 	borders broders;
 	bool BeastMode = 0;
-	bool clicked = 0;
-
-
 };
 class Board
 {
 public:
+	bool blokada_white;
+	bool blokada_black;
+	bool black_wins;
+	bool white_wins;
 	int white_player_mans = 12;
 	int black_player_mans = 12;
 	int ScreenHeight = 720;
@@ -38,6 +37,11 @@ public:
 	int boxSize = ScreenHeight/10;
 	int RoundNumber = 0;
 	place ** array_of_places;
+	place saveB;
+	place loadB;
+	place resetB;
+	place botB;
+	bool BlackBotOn = 0;
 	Board();
 	void SetBoardOnStartPoint();
 	void markplace(sf::Vector2i position);
@@ -56,5 +60,24 @@ public:
 	void promotion();
 	void BeatingMan(sf::RenderWindow &gameWindow );
 	bool isThereManinBestMode();
-	void readRoundNumber();
+	bool waspalcepress(place place, sf::Vector2i mouse_position);
+	bool isKingThatCanToBeat();
+	void MarkAllKingsThatCanTOBeat();
+	void BeatingKing(sf::RenderWindow &gameWindow);
+	bool isThereKinginBestMode();
+	bool isManThatCanMove();
+	bool isKnigThatCanMove();
+	void displayAllBeast();
+	void SelectRandomManThat();
+	void SelectRandomPlaceToGo();
+	sf::Vector2i WhereIGOTo();
+	void unmarkAllToFields();
+	bool isAMAnThatAfterBEtingWontDie();
+	bool isAmanThatAfterMoveWontDie();
+	void selectRandomMAnThatWOntDie();
+	void selectRandomBEatingMan();
 };
+
+
+
+
