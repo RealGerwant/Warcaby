@@ -17,6 +17,31 @@ Board::Board()
 
 }
 
+void Board::selectRandomBEtingKing() {
+	srand(time(NULL));
+	int i = rand() % 8;
+	int j = rand() % 8;
+	bool done = 0;
+	while (!done)
+	{
+		std::cout << "losujemy bijacego";
+		while (i < 8 && !done) {
+			while (j < 8 && !done) {
+				if (array_of_places[j][i].CanToBeat && array_of_places[j][i].IsaKing) {
+					array_of_places[j][i].IsMarkToMoveFROM = 1;
+					array_of_places[j][i].BeastMode = 1;
+					done = 1;
+				}
+				++j;
+			}
+			++i;
+		}
+		i = rand() % 8;
+		j = rand() % 8;
+	}
+	std::cout << "nie losujemy";
+}
+
 void Board::selectRandomBEatingMan() {
 	srand(time(NULL));
 	int i = rand() % 8;
@@ -29,6 +54,7 @@ void Board::selectRandomBEatingMan() {
 			while (j < 8 && !done) {
 				if (array_of_places[j][i].CanToBeat && !array_of_places[j][i].IsaKing) {
 					array_of_places[j][i].IsMarkToMoveFROM = 1;
+					array_of_places[j][i].BeastMode = 1;
 					done = 1;
 				}
 				++j;
@@ -42,10 +68,11 @@ void Board::selectRandomBEatingMan() {
 }
 
 void Board::selectRandomMAnThatWOntDie() {
-
+	bool Ucan = true;
 		srand(time(NULL));
 		int i = rand() % 8;
 		int j = rand() % 8;
+		int pj, pi;
 		bool done = 0;
 		while (!done)
 		{
@@ -101,50 +128,165 @@ void Board::selectRandomMAnThatWOntDie() {
 								}
 					}
 					else 	//black player
-					{
+					{						
 
 						if (array_of_places[j][i].IsThereAMan)
 							if (!array_of_places[j][i].WhiteTeam)
 							{
+								
 								if (((j + 1 < 8) && (i + 1 < 8) && !array_of_places[j + 1][i + 1].IsThereAMan))
 								{
-									if (j + 2 < 8 && i + 2 < 8 && array_of_places[j + 2][i + 2].IsThereAMan)
-										if (!array_of_places[j + 2][i + 2].WhiteTeam)
-											if (!done)
-											{
-												array_of_places[j + 1][i + 1].IsMArkToMoveTO = 1;
-												array_of_places[j][i].IsMarkToMoveFROM = 1;
-												array_of_places[j + 1][i + 1].CanIPutMarkedManThere = 1;
-												done = 1;
-											}
-									if (j + 2 < 8 && i + 2 < 8 && !array_of_places[j + 2][i + 2].IsThereAMan)
-										if (!done)
+									Ucan = true;
+									int jh = j + 1;
+									int ih = i + 1;
+									if (jh + 1 < 8 && ih + 1 < 8 && array_of_places[jh + 1][ih + 1].IsThereAMan && array_of_places[jh + 1][ih + 1].WhiteTeam && !done) {
+										Ucan = false;
+									}
+									if (jh - 1 >= 0 && ih + 1 < 8 && array_of_places[jh - 1][ih + 1].IsThereAMan && !done && array_of_places[jh - 1][ih + 1].WhiteTeam) {
+										Ucan = false;
+									}
+									if (jh + 1 < 8 && ih - 1 >= 0 && array_of_places[jh + 1][ih - 1].IsThereAMan && !done && array_of_places[jh + 1][ih - 1].WhiteTeam) {
+										Ucan = false;
+									}
+									if (jh - 1 >= 0 && ih - 1 >= 0 && array_of_places[jh - 1][ih - 1].IsThereAMan && !done && array_of_places[jh - 1][ih - 1].WhiteTeam) {
+										Ucan = false;
+									}
+									//damka
+									if (jh + 1 < 8 && ih + 1 < 8 && !array_of_places[jh + 1][ih + 1].IsThereAMan &&  !done) {
+										pj = jh - 1;
+										pi = ih - 1;
+										while (pj >0 && pi>0 && !array_of_places[pj][pi].IsThereAMan)
 										{
-											array_of_places[j + 1][i + 1].IsMArkToMoveTO = 1;
-											array_of_places[j][i].IsMarkToMoveFROM = 1;
-											array_of_places[j + 1][i + 1].CanIPutMarkedManThere = 1;
-											done = 1;
+											--pj;
+											--pi;
 										}
+										if (array_of_places[pj][pi].IsThereAMan && array_of_places[pj][pi].WhiteTeam && array_of_places[pj][pi].IsaKing)
+										{
+											Ucan = false;
+										}
+									}
+									if (jh - 1 >= 0 && ih + 1 < 8 && !array_of_places[jh - 1][ih + 1].IsThereAMan && !done ) {
+										pj = jh + 1;
+										pi = ih - 1;
+										while (pj <7 && pi>0 && !array_of_places[pj][pi].IsThereAMan)
+										{
+											++pj;
+											--pi;
+										}
+										if (array_of_places[pj][pi].IsThereAMan && array_of_places[pj][pi].WhiteTeam && array_of_places[pj][pi].IsaKing)
+										{
+											Ucan = false;
+										}
+									}
+									if (jh + 1 < 8 && ih - 1 >= 0 && array_of_places[jh + 1][ih - 1].IsThereAMan && !done ) {
+										pj = jh - 1;
+										pi = ih + 1;
+										while (pj >0 && pi<7 && !array_of_places[pj][pi].IsThereAMan)
+										{
+											--pj;
+											++pi;
+										}
+										if (array_of_places[pj][pi].IsThereAMan && array_of_places[pj][pi].WhiteTeam && array_of_places[pj][pi].IsaKing)
+										{
+											Ucan = false;
+										}
+									}
+									if (jh - 1 >= 0 && ih - 1 >= 0 && array_of_places[jh - 1][ih - 1].IsThereAMan && !done) {
+										pj = jh + 1;
+										pi = ih + 1;
+										while (pj <7 && pi<7 && !array_of_places[pj][pi].IsThereAMan)
+										{
+											++pj;
+											++pi;
+										}
+										if (array_of_places[pj][pi].IsThereAMan && array_of_places[pj][pi].WhiteTeam && array_of_places[pj][pi].IsaKing)
+										{
+											Ucan = false;
+										}
+									}
+									if (Ucan && !done) {
+										array_of_places[jh][ih].IsMArkToMoveTO = 1;
+										array_of_places[j][i].IsMarkToMoveFROM = 1;
+										array_of_places[jh][ih].CanIPutMarkedManThere = 1;
+										done = 1;
+									}
 								}
 								if ((j + 1 < 8) && (i - 1 >= 0) && !array_of_places[j + 1][i - 1].IsThereAMan)
 								{
-									if (j + 2 < 8 && i - 2 >= 0 && array_of_places[j + 2][i - 2].IsThereAMan)
-										if (!array_of_places[j + 2][i - 2].WhiteTeam)
-											if (!done)
-											{
-												array_of_places[j + 1][i - 1].IsMArkToMoveTO = 1;
-												array_of_places[j][i].IsMarkToMoveFROM = 1;
-												array_of_places[j+1][i-1].CanIPutMarkedManThere = 1;
-												done = 1;
-											}
-									if (j + 2 < 8 && i - 2 >= 0 && !array_of_places[j + 2][i - 2].IsThereAMan)
-										if (!done)
+									Ucan = true;
+									int jh = j + 1;
+									int ih = i - 1;
+									if (jh + 1 < 8 && ih + 1 < 8 && array_of_places[jh + 1][ih + 1].IsThereAMan && array_of_places[jh + 1][ih + 1].WhiteTeam && !done) {
+										Ucan = false;
+									}
+									if (jh - 1 >= 0 && ih + 1 < 8 && array_of_places[jh - 1][ih + 1].IsThereAMan && !done && array_of_places[jh - 1][ih + 1].WhiteTeam) {
+										Ucan = false;
+									}
+									if (jh + 1 < 8 && ih - 1 >= 0 && array_of_places[jh + 1][ih - 1].IsThereAMan && !done && array_of_places[jh + 1][ih - 1].WhiteTeam) {
+										Ucan = false;
+									}
+									if (jh - 1 >= 0 && ih - 1 >= 0 && array_of_places[jh - 1][ih - 1].IsThereAMan && !done && array_of_places[jh - 1][ih - 1].WhiteTeam) {
+										Ucan = false;
+									}
+									//damka
+									if (jh + 1 < 8 && ih + 1 < 8 && !array_of_places[jh + 1][ih + 1].IsThereAMan && !done) {
+										pj = jh - 1;
+										pi = ih - 1;
+										while (pj >0 && pi>0 && !array_of_places[pj][pi].IsThereAMan)
 										{
-											array_of_places[j + 1][i - 1].IsMArkToMoveTO = 1;
-											array_of_places[j][i].IsMarkToMoveFROM = 1;
-											array_of_places[j+1][i-1].CanIPutMarkedManThere = 1;
-											done = 1;
+											--pj;
+											--pi;
 										}
+										if (array_of_places[pj][pi].IsThereAMan && array_of_places[pj][pi].WhiteTeam && array_of_places[pj][pi].IsaKing)
+										{
+											Ucan = false;
+										}
+									}
+									if (jh - 1 >= 0 && ih + 1 < 8 && !array_of_places[jh - 1][ih + 1].IsThereAMan && !done) {
+										pj = jh + 1;
+										pi = ih - 1;
+										while (pj <7 && pi>0 && !array_of_places[pj][pi].IsThereAMan)
+										{
+											++pj;
+											--pi;
+										}
+										if (array_of_places[pj][pi].IsThereAMan && array_of_places[pj][pi].WhiteTeam && array_of_places[pj][pi].IsaKing)
+										{
+											Ucan = false;
+										}
+									}
+									if (jh + 1 < 8 && ih - 1 >= 0 && array_of_places[jh + 1][ih - 1].IsThereAMan && !done) {
+										pj = jh - 1;
+										pi = ih + 1;
+										while (pj >0 && pi<7 && !array_of_places[pj][pi].IsThereAMan)
+										{
+											--pj;
+											++pi;
+										}
+										if (array_of_places[pj][pi].IsThereAMan && array_of_places[pj][pi].WhiteTeam && array_of_places[pj][pi].IsaKing)
+										{
+											Ucan = false;
+										}
+									}
+									if (jh - 1 >= 0 && ih - 1 >= 0 && array_of_places[jh - 1][ih - 1].IsThereAMan && !done) {
+										pj = jh + 1;
+										pi = ih + 1;
+										while (pj <7 && pi<7 && !array_of_places[pj][pi].IsThereAMan)
+										{
+											++pj;
+											++pi;
+										}
+										if (array_of_places[pj][pi].IsThereAMan && array_of_places[pj][pi].WhiteTeam && array_of_places[pj][pi].IsaKing)
+										{
+											Ucan = false;
+										}
+									}
+									if (Ucan && !done) {
+										array_of_places[jh][ih].IsMArkToMoveTO = 1;
+										array_of_places[j][i].IsMarkToMoveFROM = 1;
+										array_of_places[jh][ih].CanIPutMarkedManThere = 1;
+										done = 1;
+									}
 								}
 							}
 
@@ -163,6 +305,8 @@ void Board::selectRandomMAnThatWOntDie() {
 
 bool Board::isAmanThatAfterMoveWontDie()
 {
+	int pj, pi;
+	bool Ucan = true;
 	if (RoundNumber % 2 == 0)
 		//white player
 	{
@@ -206,33 +350,164 @@ bool Board::isAmanThatAfterMoveWontDie()
 		{
 			for (int j = 0; j < 8; ++j)
 			{
+				Ucan = true;
 				if (array_of_places[j][i].IsThereAMan)
 					if (!array_of_places[j][i].WhiteTeam)
 					{
-						if (((j + 1 <8) && (i + 1 < 8) && !array_of_places[j + 1][i + 1].IsThereAMan) || (j + 1 < 8) && (i - 1 >= 0) && !array_of_places[j + 1][i - 1].IsThereAMan)
+						if (((j + 1 < 8) && (i + 1 < 8) && !array_of_places[j + 1][i + 1].IsThereAMan))
 						{
-							if (j +2 <8 && i + 2 <8 && array_of_places[j +2][i +2].IsThereAMan)
-							{
-								if (!array_of_places[j +2][i +2].WhiteTeam)
-									return true;
+							Ucan = true;
+							int jh = j + 1;
+							int ih = i + 1;
+							if (jh + 1 < 8 && ih + 1 < 8 && array_of_places[jh + 1][ih + 1].IsThereAMan && array_of_places[jh + 1][ih + 1].WhiteTeam) {
+								Ucan = false;
 							}
-							else
+							if (jh - 1 >= 0 && ih + 1 < 8 && array_of_places[jh - 1][ih + 1].IsThereAMan && array_of_places[jh - 1][ih + 1].WhiteTeam) {
+								Ucan = false;
+							}
+							if (jh + 1 < 8 && ih - 1 >= 0 && array_of_places[jh + 1][ih - 1].IsThereAMan  && array_of_places[jh + 1][ih - 1].WhiteTeam) {
+								Ucan = false;
+							}
+							if (jh - 1 >= 0 && ih - 1 >= 0 && array_of_places[jh - 1][ih - 1].IsThereAMan  && array_of_places[jh - 1][ih - 1].WhiteTeam) {
+								Ucan = false;
+							}
+							//damka
+							if (jh + 1 < 8 && ih + 1 < 8 && !array_of_places[jh + 1][ih + 1].IsThereAMan) {
+								pj = jh - 1;
+								pi = ih - 1;
+								while (pj >0 && pi>0 && !array_of_places[pj][pi].IsThereAMan)
+								{
+									--pj;
+									--pi;
+								}
+								if (array_of_places[pj][pi].IsThereAMan && array_of_places[pj][pi].WhiteTeam && array_of_places[pj][pi].IsaKing)
+								{
+									Ucan = false;
+								}
+							}
+							if (jh - 1 >= 0 && ih + 1 < 8 && !array_of_places[jh - 1][ih + 1].IsThereAMan) {
+								pj = jh + 1;
+								pi = ih - 1;
+								while (pj <7 && pi>0 && !array_of_places[pj][pi].IsThereAMan)
+								{
+									++pj;
+									--pi;
+								}
+								if (array_of_places[pj][pi].IsThereAMan && array_of_places[pj][pi].WhiteTeam && array_of_places[pj][pi].IsaKing)
+								{
+									Ucan = false;
+								}
+							}
+							if (jh + 1 < 8 && ih - 1 >= 0 && array_of_places[jh + 1][ih - 1].IsThereAMan) {
+								pj = jh - 1;
+								pi = ih + 1;
+								while (pj >0 && pi<7 && !array_of_places[pj][pi].IsThereAMan)
+								{
+									--pj;
+									++pi;
+								}
+								if (array_of_places[pj][pi].IsThereAMan && array_of_places[pj][pi].WhiteTeam && array_of_places[pj][pi].IsaKing)
+								{
+									Ucan = false;
+								}
+							}
+							if (jh - 1 >= 0 && ih - 1 >= 0 && array_of_places[jh - 1][ih - 1].IsThereAMan) {
+								pj = jh + 1;
+								pi = ih + 1;
+								while (pj <7 && pi<7 && !array_of_places[pj][pi].IsThereAMan)
+								{
+									++pj;
+									++pi;
+								}
+								if (array_of_places[pj][pi].IsThereAMan && array_of_places[pj][pi].WhiteTeam && array_of_places[pj][pi].IsaKing)
+								{
+									Ucan = false;
+								}
+							}
+							if (Ucan)
 							{
 								return true;
 							}
-							if (j + 2 <8 && i - 2 >= 0 && array_of_places[j + 2][i - 2].IsThereAMan)
+							if ((j + 1 < 8) && (i - 1 >= 0) && !array_of_places[j + 1][i - 1].IsThereAMan)
 							{
-							if (!array_of_places[j + 2][i - 2].WhiteTeam)
+								Ucan = true;
+								int jh = j + 1;
+								int ih = i - 1;
+								if (jh + 1 < 8 && ih + 1 < 8 && array_of_places[jh + 1][ih + 1].IsThereAMan && array_of_places[jh + 1][ih + 1].WhiteTeam) {
+									Ucan = false;
+								}
+								if (jh - 1 >= 0 && ih + 1 < 8 && array_of_places[jh - 1][ih + 1].IsThereAMan && array_of_places[jh - 1][ih + 1].WhiteTeam) {
+									Ucan = false;
+								}
+								if (jh + 1 < 8 && ih - 1 >= 0 && array_of_places[jh + 1][ih - 1].IsThereAMan  && array_of_places[jh + 1][ih - 1].WhiteTeam) {
+									Ucan = false;
+								}
+								if (jh - 1 >= 0 && ih - 1 >= 0 && array_of_places[jh - 1][ih - 1].IsThereAMan  && array_of_places[jh - 1][ih - 1].WhiteTeam) {
+									Ucan = false;
+								}
+								//damka
+								if (jh + 1 < 8 && ih + 1 < 8 && !array_of_places[jh + 1][ih + 1].IsThereAMan) {
+									pj = jh - 1;
+									pi = ih - 1;
+									while (pj >0 && pi>0 && !array_of_places[pj][pi].IsThereAMan)
+									{
+										--pj;
+										--pi;
+									}
+									if (array_of_places[pj][pi].IsThereAMan && array_of_places[pj][pi].WhiteTeam && array_of_places[pj][pi].IsaKing)
+									{
+										Ucan = false;
+									}
+								}
+								if (jh - 1 >= 0 && ih + 1 < 8 && !array_of_places[jh - 1][ih + 1].IsThereAMan) {
+									pj = jh + 1;
+									pi = ih - 1;
+									while (pj <7 && pi>0 && !array_of_places[pj][pi].IsThereAMan)
+									{
+										++pj;
+										--pi;
+									}
+									if (array_of_places[pj][pi].IsThereAMan && array_of_places[pj][pi].WhiteTeam && array_of_places[pj][pi].IsaKing)
+									{
+										Ucan = false;
+									}
+								}
+								if (jh + 1 < 8 && ih - 1 >= 0 && array_of_places[jh + 1][ih - 1].IsThereAMan) {
+									pj = jh - 1;
+									pi = ih + 1;
+									while (pj >0 && pi<7 && !array_of_places[pj][pi].IsThereAMan)
+									{
+										--pj;
+										++pi;
+									}
+									if (array_of_places[pj][pi].IsThereAMan && array_of_places[pj][pi].WhiteTeam && array_of_places[pj][pi].IsaKing)
+									{
+										Ucan = false;
+									}
+								}
+								if (jh - 1 >= 0 && ih - 1 >= 0 && array_of_places[jh - 1][ih - 1].IsThereAMan) {
+									pj = jh + 1;
+									pi = ih + 1;
+									while (pj <7 && pi<7 && !array_of_places[pj][pi].IsThereAMan)
+									{
+										++pj;
+										++pi;
+									}
+									if (array_of_places[pj][pi].IsThereAMan && array_of_places[pj][pi].WhiteTeam && array_of_places[pj][pi].IsaKing)
+									{
+										Ucan = false;
+									}
+								}
+								if (Ucan) {
 									return true;
-							}
-							else
-							{
-								return true;
+								}
 							}
 						}
 					}
+
 			}
 		}
+
 	}
 	return false;
 }

@@ -76,6 +76,7 @@ public:
 	bool isAmanThatAfterMoveWontDie();
 	void selectRandomMAnThatWOntDie();
 	void selectRandomBEatingMan();
+	void selectRandomBEtingKing();
 };
 
 
