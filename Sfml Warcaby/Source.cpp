@@ -101,10 +101,16 @@ int main(int argc, char **argv)
 				plansza.selectRandomBEtingKing();
 				plansza.unmarkAllICanUseFields();
 				plansza.markAllFielsdWhereICanPutThisKing();
-				Sleep(700);
-				plansza.SelectRandomPlaceToGo();
-				pomocniczy = plansza.WhereIGOTo();
-				plansza.BeatingKing(gameWindow);
+				while (plansza.isThereKinginBestMode())
+				{
+					gameWindow.clear();
+					draw(plansza.boxSize, gameWindow, plansza, array_of_themes, themeID);
+					gameWindow.display();
+					Sleep(500);
+					plansza.SelectRandomPlaceToGo();
+					plansza.BeatingKing(gameWindow);
+					plansza.unmarkAllToFields();
+				}
 
 				plansza.RoundNumber++;
 				done = 1;

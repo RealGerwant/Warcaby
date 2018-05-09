@@ -302,7 +302,6 @@ void Board::selectRandomMAnThatWOntDie() {
 		std::cout << "nie losujemy";
 	}
 
-
 bool Board::isAmanThatAfterMoveWontDie()
 {
 	int pj, pi;
@@ -2061,6 +2060,20 @@ void Board::BeatingKing(sf::RenderWindow &gameWindow)
 		array_of_places[jfrom][ifrom].IsaKing = 0;
 		int jto, ito;
 		bool get = false;
+
+		for (int i = 0; i < 8; i++)
+		{
+			for (int j = 0; j < 8; ++j)
+			{
+				if (array_of_places[j][i].IsMArkToMoveTO)
+				{
+					jto = j;
+					ito = i;
+					get = true;
+				}
+			}
+		}
+
 		while (!get)
 		{
 			for (int i = 0; i < 8; i++)
